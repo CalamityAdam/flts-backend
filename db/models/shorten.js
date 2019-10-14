@@ -8,7 +8,7 @@ const Shorten = db.define('shorten', {
     allowNull: false,
   },
   redirect: {
-    type: Sequelize.STRING,
+    type: Sequelize.TEXT,
     allowNull: false,
   },
   expiration: {

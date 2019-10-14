@@ -6,6 +6,8 @@ const PORT = process.env.PORT || 4000;
 const app = express();
 module.exports = app;
 
+if (process.env.NODE_ENV !== 'production') require('./secrets')
+
 const createApp = () => {
   app.use(cors());
   app.use(morgan('dev'));
