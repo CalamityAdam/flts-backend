@@ -1,11 +1,14 @@
 {
   "name": "flts-backend",
   "version": "1.0.0",
+  "engines": {
+    "node": ">= 11.0.0"
+  },
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
-    "console": "node --experimental-repl-await ./console.js"
+    "console": "node --experimental-repl-await ./console.js",
+    "start": "node index.js"
   },
   "keywords": [],
   "author": "",
