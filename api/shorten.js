@@ -6,7 +6,7 @@ module.exports = router;
 router.get('/', async (req, res, next) => {
   try {
     const allSlugs = await Shorten.findAll({
-      attributes: ['slug', 'redirect', 'id'],
+      attributes: ['slug', 'redirect', 'id', 'expiration'],
     });
     res.json(allSlugs);
   } catch (err) {
@@ -17,16 +17,23 @@ router.get('/', async (req, res, next) => {
 // GET /api/shorten/:slug  get one redirect and respond with the accoding redirect
 router.get('/:slug', async (req, res, next) => {
   try {
-    // TODO: add expiration check to destroy old redirects and respond accordingly
     const redirect = await Shorten.findOne({
       where: { slug: req.params.slug },
     });
     if (redirect) {
-      // found the slug
-      res.json({ redirect: redirect.redirect })
+      // * found the slug
+      //* check for expiration
+      if ((Number(redirect.createdAt) + redirect.expiration) <= Date.now()) {
+        //! expired
+        await Shorten.destroy({ where: { id: redirect.id } })
+        return res.json({ message: 'expired or incorrect link' })
+      } else {
+        //* still valid
+        return res.json({ redirect: redirect.redirect })
+      }
     } else {
-      // slug doesn't exist
-      res.json({ message: 'expired or incorrect link' })
+      //! slug doesn't exist
+      return res.json({ message: 'expired or incorrect link' })
     }
   } catch (err) {
     next(err);
@@ -36,20 +43,19 @@ router.get('/:slug', async (req, res, next) => {
 // POST /api/shorten/  create a new redirect
 router.post('/', async (req, res, next) => {
   try {
+    // TODO: check these
     let { expiration, redirect, slug } = req.body
-    console.log(req.body)
     if (!slug) {
-      // slug not provided, auto-generate one
+      //* slug not provided, auto-generate one
       slug = Math.random().toString(36).substr(2, 5)
     }
-    console.log(slug)
-    // convert the expiration time from minutes to ms
+    //* convert the expiration time from minutes to ms
     expiration = expiration * 60000
     
     const newShorten = await Shorten.create({
       redirect, slug, expiration
     })
-    
+    // ! if create fails, error will be thrown and handled by catch
     res.json(newShorten)
   } catch (err) {
     if (err.name === 'SequelizeUniqueConstraintError') {
@@ -57,8 +63,6 @@ router.post('/', async (req, res, next) => {
     } else {
       next(err)
     }
-    
-    
     next(err)
   }
 })

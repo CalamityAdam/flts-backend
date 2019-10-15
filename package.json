@@ -1,6 +1,6 @@
 {
   "name": "flts-backend",
-  "version": "1.0.0",
+  "version": "1.1.0",
   "engines": {
     "node": ">= 11.0.0"
   },
@@ -11,7 +11,7 @@
     "start": "node index.js"
   },
   "keywords": [],
-  "author": "",
+  "author": "adam sisk",
   "license": "ISC",
   "dependencies": {
     "cors": "^2.8.5",
