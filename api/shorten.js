@@ -26,7 +26,7 @@ router.get('/:slug', async (req, res, next) => {
       res.json({ redirect: redirect.redirect })
     } else {
       // slug doesn't exist
-      res.json({ message: 'Custom name not found' })
+      res.json({ message: 'expired or incorrect link' })
     }
   } catch (err) {
     next(err);
