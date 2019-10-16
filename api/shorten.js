@@ -14,7 +14,8 @@ router.get('/', async (req, res, next) => {
   }
 });
 
-// GET /api/shorten/:slug  get one redirect and respond with the accoding redirect
+// GET /api/shorten/:slug  get one redirect and respond with the accoding
+// redirect
 router.get('/:slug', async (req, res, next) => {
   try {
     const redirect = await Shorten.findOne({
@@ -23,17 +24,17 @@ router.get('/:slug', async (req, res, next) => {
     if (redirect) {
       // * found the slug
       //* check for expiration
-      if ((Number(redirect.createdAt) + redirect.expiration) <= Date.now()) {
-        //! expired
-        await Shorten.destroy({ where: { id: redirect.id } })
-        return res.json({ message: 'expired or incorrect link' })
+      if (Number(redirect.createdAt) + redirect.expiration <= Date.now()) {
+        // ! expired
+        await Shorten.destroy({ where: { id: redirect.id } });
+        return res.json({ message: 'expired or incorrect link' });
       } else {
         //* still valid
-        return res.json({ redirect: redirect.redirect })
+        return res.json({ redirect: redirect.redirect });
       }
     } else {
-      //! slug doesn't exist
-      return res.json({ message: 'expired or incorrect link' })
+      // ! slug doesn't exist
+      return res.json({ message: 'expired or incorrect link' });
     }
   } catch (err) {
     next(err);
@@ -44,25 +45,29 @@ router.get('/:slug', async (req, res, next) => {
 router.post('/', async (req, res, next) => {
   try {
     // TODO: check these
-    let { expiration, redirect, slug } = req.body
+    let { expiration, redirect, slug } = req.body;
     if (!slug) {
       //* slug not provided, auto-generate one
-      slug = Math.random().toString(36).substr(2, 5)
+      slug = Math.random()
+        .toString(36)
+        .substr(2, 5);
     }
     //* convert the expiration time from minutes to ms
-    expiration = expiration * 60000
-    
+    expiration = expiration * 60000;
+
     const newShorten = await Shorten.create({
-      redirect, slug, expiration
-    })
+      redirect,
+      slug,
+      expiration,
+    });
     // ! if create fails, error will be thrown and handled by catch
-    res.json(newShorten)
+    res.json(newShorten);
   } catch (err) {
     if (err.name === 'SequelizeUniqueConstraintError') {
-      res.status(401).send('slug taken')
+      res.status(401).send('slug taken');
     } else {
-      next(err)
+      next(err);
     }
-    next(err)
+    next(err);
   }
-})
+});

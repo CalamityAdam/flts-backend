@@ -14,11 +14,19 @@
   "author": "adam sisk",
   "license": "ISC",
   "dependencies": {
+    "connect-session-sequelize": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^8.1.0",
     "express": "^4.17.1",
+    "express-session": "^1.17.0",
     "morgan": "^1.9.1",
+    "passport": "^0.4.0",
+    "passport-google-oauth": "^2.0.0",
     "pg": "^7.12.1",
     "sequelize": "^5.19.4"
+  },
+  "devDependencies": {
+    "eslint": "^6.5.1",
+    "eslint-config-google": "^0.14.0"
   }
 }

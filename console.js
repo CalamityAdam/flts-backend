@@ -1,13 +1,13 @@
 const repl = require('repl');
-const { Shorten } = require('./db/models')
-const db = require('./db')
+const { Shorten } = require('./db/models');
+const db = require('./db');
 
 // db.sync({ force: true })
-db.sync()
+db.sync();
 
 const replServer = repl.start({
-  prompt: "FTLS > ",
+  prompt: 'FTLS > ',
 });
 
-replServer.context.db = db
-replServer.context.Shorten = Shorten
+replServer.context.db = db;
+replServer.context.Shorten = Shorten;
