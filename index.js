@@ -5,29 +5,40 @@ const session = require('express-session');
 const passport = require('passport');
 const SequelizeStore = require('connect-session-sequelize')(session.Store);
 const db = require('./db');
-const sessionStore = new SequelizeStore({db});
+const sessionStore = new SequelizeStore({ db });
 const PORT = process.env.PORT || 4000;
 const app = express();
+const socketio = require('socket.io');
 module.exports = app;
 
 if (process.env.NODE_ENV !== 'production') require('./secrets');
 
 // passport registration
-passport.serializeUser((user, done) => done(null, user.id));
+// passport.serializeUser((user, done) => done(null, user.id));
+passport.serializeUser((user, done) => {
+  console.log('in SERIALIZE user: ', user);
+  return done(null, user.id);
+});
 
 passport.deserializeUser(async (id, done) => {
+  console.log('in DEserialize id: ', id);
   try {
     const user = await db.models.user.findByPk(id);
-    done(null, user);
+    const userObj = {
+      id: user.id,
+      email: user.email,
+    };
+    done(null, userObj);
   } catch (err) {
     done(err);
   }
 });
 
-
-
 const createApp = () => {
-  app.use(cors());
+  app.use(cors({
+    origin: ['http://localhost:3000', /\.adumb\.dev$/],
+    credentials: true,
+  }));
   app.use(morgan('dev'));
   app.use(express.json());
   app.use(
@@ -41,23 +52,28 @@ const createApp = () => {
       store: sessionStore,
       resave: false,
       saveUninitialized: false,
-    })
+    }),
   );
 
   app.use(passport.initialize());
   app.use(passport.session());
 
-  // app.use('/auth', require('./auth'));
+  app.use('/auth', require('./auth'));
   app.use('/api', require('./api'));
 
+  /**
+   * handle any incorrect paths
+   */
   app.use((req, res, next) => {
     const err = new Error('Not found');
     err.status = 404;
     next(err);
   });
 
+  /**
+   * final error handling
+   */
   app.use((err, req, res, next) => {
-    // res.json('oops')
     console.error(err);
     console.error(err.stack);
     res.status(err.status || 500).send(err.message || 'Internal server error.');
@@ -65,11 +81,13 @@ const createApp = () => {
 };
 
 const startListening = () => {
-  const server = app.listen(PORT, () => {
-    console.log('App running on port ' + PORT);
-  });
+  const server = app.listen(PORT, () =>
+    console.log(`gettin jiggy on port ${PORT}`),
+  );
 
-  // if implementing sockets, do that here
+  // set up our socket control center
+  const io = socketio(server);
+  require('./socket')(io);
 };
 
 const syncDb = () => db.sync();

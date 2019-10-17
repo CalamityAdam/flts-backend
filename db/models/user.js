@@ -8,7 +8,7 @@ const User = db.define('user', {
     unique: true,
     allowNull: false,
   },
-  passwordHash: {
+  password: {
     type: Sequelize.STRING,
     get() {
       return () => this.getDataValue('password');

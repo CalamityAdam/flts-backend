@@ -2,7 +2,8 @@ const repl = require('repl');
 const { Shorten } = require('./db/models');
 const db = require('./db');
 
-// db.sync({ force: true })
+// uncomment this to wipe DB
+// db.sync({ force: true });
 db.sync();
 
 const replServer = repl.start({
