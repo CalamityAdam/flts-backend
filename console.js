@@ -1,5 +1,5 @@
 const repl = require('repl');
-const { Shorten } = require('./db/models');
+const { Shorten, User } = require('./db/models');
 const db = require('./db');
 
 // uncomment this to wipe DB
@@ -12,3 +12,4 @@ const replServer = repl.start({
 
 replServer.context.db = db;
 replServer.context.Shorten = Shorten;
+replServer.context.User = User;

@@ -24,12 +24,10 @@ router.get('/:slug', async (req, res, next) => {
     if (redirect) {
       // * found the slug
       // * check for expiration. if 0: permanent link, skip check
-      if (redirect.expiration) {
-        if (Number(redirect.createdAt) + redirect.expiration <= Date.now()) {
-          // ! expired
-          Shorten.destroy({ where: { id: redirect.id } });
-          return res.json({ message: 'expired or incorrect link' });
-        }
+      if (!redirect.isActive()) {
+        // ! expired
+        Shorten.destroy({ where: { id: redirect.id } });
+        return res.json({ message: 'expired or incorrect link' });
       }
       //* still valid
       return res.json({ redirect: redirect.redirect });
@@ -42,11 +40,11 @@ router.get('/:slug', async (req, res, next) => {
   }
 });
 
-// POST /api/shorten/  create a new redirect
+// POST /api/shorten/ - create a new redirect/shorten
 router.post('/', async (req, res, next) => {
   try {
-    // TODO: check these
-    let { expiration, redirect, slug } = req.body;
+    // TODO: sanitize these
+    let { expiration, redirect, slug, userId } = req.body;
     if (!slug) {
       //* slug not provided, auto-generate one
       slug = Math.random()
@@ -60,6 +58,7 @@ router.post('/', async (req, res, next) => {
       redirect,
       slug,
       expiration,
+      userId,
     });
     // ! if create fails, error will be thrown and handled by catch
     res.json(newShorten);
