@@ -43,7 +43,7 @@ const createApp = () => {
   );
   app.use(
     session({
-      secret: process.env.SESSION_SECRET || 'explanationofbenef_itslol',
+      secret: process.env.SESSION_SECRET || 'XvPI2vEpNbcrW2c4Iosz',
       store: sessionStore,
       resave: false,
       saveUninitialized: false,
