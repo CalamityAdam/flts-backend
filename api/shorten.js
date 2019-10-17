@@ -23,15 +23,16 @@ router.get('/:slug', async (req, res, next) => {
     });
     if (redirect) {
       // * found the slug
-      //* check for expiration
-      if (Number(redirect.createdAt) + redirect.expiration <= Date.now()) {
-        // ! expired
-        await Shorten.destroy({ where: { id: redirect.id } });
-        return res.json({ message: 'expired or incorrect link' });
-      } else {
-        //* still valid
-        return res.json({ redirect: redirect.redirect });
+      // * check for expiration. if 0: permanent link, skip check
+      if (redirect.expiration) {
+        if (Number(redirect.createdAt) + redirect.expiration <= Date.now()) {
+          // ! expired
+          Shorten.destroy({ where: { id: redirect.id } });
+          return res.json({ message: 'expired or incorrect link' });
+        }
       }
+      //* still valid
+      return res.json({ redirect: redirect.redirect });
     } else {
       // ! slug doesn't exist
       return res.json({ message: 'expired or incorrect link' });
