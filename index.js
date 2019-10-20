@@ -12,7 +12,6 @@ const app = express();
 module.exports = app;
 
 if (process.env.NODE_ENV !== 'production') require('./secrets');
-
 // passport registration
 passport.serializeUser((user, done) => done(null, user.id));
 
@@ -64,6 +63,7 @@ const createApp = () => {
 
   app.use('/auth', require('./auth'));
   app.use('/api', require('./api'));
+  app.use('/sms', require('./sms'));
 
   /**
    * handle any incorrect paths

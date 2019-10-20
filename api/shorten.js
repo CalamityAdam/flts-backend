@@ -47,9 +47,7 @@ router.post('/', async (req, res, next) => {
     let { expiration, redirect, slug, userId } = req.body;
     if (!slug) {
       //* slug not provided, auto-generate one
-      slug = Math.random()
-        .toString(36)
-        .substr(2, 5);
+      slug = (Date.now() * Math.random()).toString(36).substr(0, 5);
     }
     //* convert the expiration time from minutes to ms
     expiration = expiration * 60000;

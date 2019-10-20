@@ -19,6 +19,7 @@
     "new-cap": "off",
     "require-jsdoc": "off",
     "no-unused-vars": "warn",
-    "no-multiple-empty-lines": "off"
+    "no-multiple-empty-lines": "off",
+    "quotes": "off"
   }
 }
