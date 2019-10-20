@@ -41,16 +41,21 @@ const createApp = () => {
       extended: true,
     }),
   );
+  const sess = {
+    secret: process.env.SESSION_SECRET || 'XvPI2vEpNbcrW2c4Iosz',
+    store: sessionStore,
+    resave: false,
+    saveUninitialized: false,
+    cookie: {
+      expires: new Date(1699999999999),
+    },
+  };
+  if (app.get('env') === 'production') {
+    app.set('trust proxy', 1);
+    sess.cookie.secure = true;
+  };
   app.use(
-    session({
-      secret: process.env.SESSION_SECRET || 'XvPI2vEpNbcrW2c4Iosz',
-      store: sessionStore,
-      resave: false,
-      saveUninitialized: false,
-      cookie: {
-        expires: new Date(1699999999999),
-      },
-    }),
+    session(sess),
   );
 
   app.use(passport.initialize());
