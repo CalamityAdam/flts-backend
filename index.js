@@ -47,6 +47,9 @@ const createApp = () => {
       store: sessionStore,
       resave: false,
       saveUninitialized: false,
+      cookie: {
+        expires: new Date(1699999999999),
+      },
     }),
   );
 
