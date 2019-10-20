@@ -12,6 +12,7 @@ const app = express();
 module.exports = app;
 
 if (process.env.NODE_ENV !== 'production') require('./secrets');
+
 // passport registration
 passport.serializeUser((user, done) => done(null, user.id));
 
@@ -47,13 +48,13 @@ const createApp = () => {
     saveUninitialized: false,
     cookie: {
       expires: new Date(1699999999999),
-      SameSite: 'lax',
+      // SameSite: 'lax',
     },
   };
-  if (app.get('env') === 'production') {
-    // app.set('trust proxy', 1);
-    sess.cookie.secure = true;
-  };
+  // if (app.get('env') === 'production') {
+  //   app.set('trust proxy', 1);
+  //   sess.cookie.secure = true;
+  // };
   app.use(
     session(sess),
   );

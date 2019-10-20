@@ -51,6 +51,7 @@ router.post('/', async (req, res, next) => {
     }
     //* convert the expiration time from minutes to ms
     expiration = expiration * 60000;
+    userId = userId || null;
 
     const newShorten = await Shorten.create({
       redirect,
