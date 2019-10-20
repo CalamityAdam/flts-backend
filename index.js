@@ -48,6 +48,7 @@ const createApp = () => {
     saveUninitialized: false,
     cookie: {
       expires: new Date(1699999999999),
+      SameSite: 'lax',
     },
   };
   if (app.get('env') === 'production') {
