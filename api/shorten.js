@@ -70,3 +70,18 @@ router.post('/', async (req, res, next) => {
     next(err);
   }
 });
+
+// DELETE /api/shorten/:id
+router.delete('/:id', async (req, res, next) => {
+  try {
+    const shorten = await Shorten.findByPk(req.params.id);
+    if (shorten) {
+      await shorten.destroy();
+      res.sendStatus(204)
+    } else {
+      res.sendStatus(404);
+    }
+  } catch (err) {
+    next(err);
+  }
+});
