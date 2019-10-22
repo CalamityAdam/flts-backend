@@ -78,7 +78,7 @@ router.post('/logout', (req, res) => {
 });
 
 // force session destory... do not use!
-router.get('/do-not-use-super-secret-force-logout', (req, res) => {
+router.post('/do-not-use-super-secret-force-logout', (req, res) => {
   req.logout();
   req.session.destroy();
   res.status(205).send('success');
