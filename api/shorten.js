@@ -77,7 +77,7 @@ router.delete('/:id', async (req, res, next) => {
     const shorten = await Shorten.findByPk(req.params.id);
     if (shorten) {
       await shorten.destroy();
-      res.sendStatus(204)
+      res.sendStatus(204);
     } else {
       res.sendStatus(404);
     }

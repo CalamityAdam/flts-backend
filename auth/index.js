@@ -65,7 +65,7 @@ router.post('/silentauth', async (req, res, next) => {
       }
     }
   } catch (err) {
-    console.log('err in silent auth with session id:, req.session.id');
+    console.log('err in silent auth with session id:', req.session.id);
     next(err);
   }
 });
@@ -74,6 +74,13 @@ router.post('/silentauth', async (req, res, next) => {
 router.post('/logout', (req, res) => {
   req.logout();
   // req.session.destroy();
+  res.status(205).send('success');
+});
+
+// force session destory... do not use!
+router.get('/do-not-use-super-secret-force-logout', (req, res) => {
+  req.logout();
+  req.session.destroy();
   res.status(205).send('success');
 });
 
