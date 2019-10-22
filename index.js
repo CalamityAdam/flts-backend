@@ -81,6 +81,10 @@ const createApp = () => {
   app.use((err, req, res, next) => {
     console.error(err);
     console.error(err.stack);
+    if (err.message === "Cannot read property 'id' of null") {
+      // prevent errors from session persisting when it shouldn't
+      req.logout();
+    }
     res.status(err.status || 500).send(err.message || 'Internal server error.');
   });
 };
