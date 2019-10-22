@@ -25,6 +25,10 @@ const User = db.define('user', {
   phoneNumber: {
     type: Sequelize.BIGINT,
   },
+  sessionId: {
+    type: Sequelize.STRING,
+    unique: true,
+  },
 });
 
 module.exports = User;

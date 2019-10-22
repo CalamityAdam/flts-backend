@@ -21,7 +21,7 @@ passport.deserializeUser(async (id, done) => {
     const user = await db.models.user.findByPk(id);
     const userObj = {
       id: user.id,
-      email: user.email,
+      // email: user.email,
     };
     done(null, userObj);
   } catch (err) {
@@ -44,8 +44,8 @@ const createApp = () => {
   const sess = {
     secret: process.env.SESSION_SECRET || 'XvPI2vEpNbcrW2c4Iosz',
     store: sessionStore,
-    resave: false,
-    saveUninitialized: false,
+    resave: true,
+    saveUninitialized: true,
     cookie: {
       expires: new Date(1699999999999),
       // SameSite: 'lax',

@@ -35,5 +35,7 @@ Shorten.findAllActiveByUser = async function(userId) {
   const all = await Shorten.findAll({ where: { userId } });
   return all
     .filter((shorten) => shorten.isActive())
-    .map(({slug, redirect}) => ({ slug, redirect }));
+    .map(({slug, redirect, expiration, id, createdAt}) => (
+      { slug, redirect, expiration, id, createdAt }
+    ));
 };

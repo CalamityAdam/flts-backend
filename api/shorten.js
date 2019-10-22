@@ -63,7 +63,7 @@ router.post('/', async (req, res, next) => {
     res.json(newShorten);
   } catch (err) {
     if (err.name === 'SequelizeUniqueConstraintError') {
-      return res.status(400).send('slug taken');
+      return res.status(400).send('custom name taken');
     } else {
       next(err);
     }

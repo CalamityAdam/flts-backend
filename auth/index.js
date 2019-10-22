@@ -21,9 +21,7 @@ router.post('/login', async (req, res, next) => {
         id: user.id,
         email: user.email,
       };
-      req.login(user, (err) =>
-        err ? next(err) : res.json(userObj),
-      );
+      req.login(user, (err) => (err ? next(err) : res.json(userObj)));
     }
   } catch (err) {
     next(err);
@@ -45,6 +43,30 @@ router.post('/signup', async (req, res, next) => {
     } else {
       next(err);
     }
+  }
+});
+
+// POST /auth/silentauth - signin/login with sesion id
+router.post('/silentauth', async (req, res, next) => {
+  try {
+    const sessionId = req.session.id;
+    const { name, check } = req.body;
+    if (name === process.env.SILENT_AUTH_NAME) {
+      if (check === process.env.SILENT_AUTH_CHECK) {
+        const [user] = await User.findOrCreate({
+          where: {
+            sessionId,
+          },
+        });
+        const userObj = {
+          id: user.id,
+        };
+        req.login(userObj, (err) => (err ? next(err) : res.json(userObj)));
+      }
+    }
+  } catch (err) {
+    console.log('err in silent auth with session id:, req.session.id');
+    next(err);
   }
 });
 
