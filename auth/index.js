@@ -73,7 +73,7 @@ router.post('/silentauth', async (req, res, next) => {
 // POST /auth/logout - log out user
 router.post('/logout', (req, res) => {
   req.logout();
-  req.session.destroy();
+  // req.session.destroy();
   res.status(205).send('success');
 });
 
