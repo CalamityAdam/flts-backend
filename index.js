@@ -48,6 +48,8 @@ const createApp = () => {
     saveUninitialized: true,
     cookie: {
       expires: new Date(1699999999999),
+      SameSite: 'None',
+      secure: true,
       // SameSite: 'lax',
     },
   };

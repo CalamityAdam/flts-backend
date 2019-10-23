@@ -62,7 +62,11 @@ router.post('/silentauth', async (req, res, next) => {
           id: user.id,
         };
         req.login(userObj, (err) => (err ? next(err) : res.json(userObj)));
+      } else {
+        res.sendStatus(403);
       }
+    } else {
+      res.sendStatus(403);
     }
   } catch (err) {
     console.log('err in silent auth with session id:', req.session.id);
