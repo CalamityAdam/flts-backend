@@ -6,7 +6,7 @@ module.exports = router;
 router.get('/', async (req, res, next) => {
   try {
     const allSlugs = await Shorten.findAll({
-      attributes: ['slug', 'redirect', 'id', 'expiration'],
+      attributes: ['slug', 'redirect', 'id', 'expiration', 'createdAt'],
     });
     res.json(allSlugs);
   } catch (err) {
@@ -18,19 +18,19 @@ router.get('/', async (req, res, next) => {
 // redirect
 router.get('/:slug', async (req, res, next) => {
   try {
-    const redirect = await Shorten.findOne({
+    const shorten = await Shorten.findOne({
       where: { slug: req.params.slug },
     });
-    if (redirect) {
+    if (shorten) {
       // * found the slug
       // * check for expiration. if 0: permanent link, skip check
-      if (!redirect.isActive()) {
+      if (!shorten.isActive()) {
         // ! expired
-        Shorten.destroy({ where: { id: redirect.id } });
+        Shorten.destroy({ where: { id: shorten.id } });
         return res.json({ message: 'expired or incorrect link' });
       }
       //* still valid
-      return res.json({ redirect: redirect.redirect });
+      return res.json({ redirect: shorten.redirect });
     } else {
       // ! slug doesn't exist
       return res.json({ message: 'expired or incorrect link' });
@@ -85,3 +85,18 @@ router.delete('/:id', async (req, res, next) => {
     next(err);
   }
 });
+
+// GET /api/shorten/purgedata
+/**
+ * INCOMPLETE
+ * this route will return the number of shortens that are expired
+ * purely for admin use
+ */
+// router.get('/purgedata', async (req, res, next) => {
+//   try {
+//     const allShortens = await Shorten.findAll();
+//     const inactive =
+//   } catch (err) {
+//     next(err);
+//   }
+// });

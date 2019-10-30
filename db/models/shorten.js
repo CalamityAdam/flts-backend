@@ -39,3 +39,21 @@ Shorten.findAllActiveByUser = async function(userId) {
       { slug, redirect, expiration, id, createdAt }
     ));
 };
+
+Shorten.findAllActive = async function() {
+  const all = await Shorten.findAll();
+  return all
+    .filter((shorten) => shorten.isActive())
+    .map(({slug, redirect, expiration, id, createdAt }) => (
+      { slug, redirect, expiration, id, createdAt }
+    ));
+};
+
+Shorten.purge = async function() {
+  const all = await Shorten.findAll();
+  all.forEach(async (shorten) => {
+    if (!shorten.isActive()) {
+      await shorten.destroy();
+    }
+  });
+};
