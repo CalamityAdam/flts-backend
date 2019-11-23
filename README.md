@@ -1,54 +1,65 @@
-[![Netlify Status](https://api.netlify.com/api/v1/badges/9034c417-f3f9-4bb8-b6b2-e8931925e041/deploy-status)](https://app.netlify.com/sites/)
-# Sisk Short Links [frontend]
+# Sisk Short Links [backend]
 
-A simple short link generator with optional custom names and expiration settings
+[![Netlify Status](https://api.netlify.com/api/v1/badges/9034c417-f3f9-4bb8-b6b2-e8931925e041/deploy-status)](https://app.netlify.com/sites/)
+
+The backend for a simple short link generator with optional custom names and expiration settings built in [Node.js®](https://nodejs.org/)
 
 ## Getting Started
 
-These instructions will get you a copy of the project up and running on your local machine for development and testing purposes. See deployment for notes on how to deploy the project on a live system.
+These instructions will get you a copy of the project up and running on your local machine for development and testing purposes.
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
+need to have:
 
-```
-Give examples
-```
++ [PostgreSQL](https://www.postgresql.org/)
 
-### Installing
+### Installation
 
-A step by step series of examples that tell you how to get a development env running
++ fork and clone this repository
 
-Say what the step will be
-
-```
-Give the example
+```console
+npm install
+createdb <package-name>
+npm run seed
 ```
 
-And repeat
++ note: package name is `asls-backend` by default
 
++ create file `./secrets.js` in root of project and place the following environment variables in that file
++ required environment variables:
+
+```js
+process.env.SESSION_SECRET = '<put a nice tasty secret here>';
+process.env.SILENT_AUTH_NAME = '<login username>';
+process.env.SILENT_AUTH_CHECK = '<login password>';
 ```
-until finished
+
++ optional environment variables (if connecting SMS support via [Twilio](https://www.twilio.com/)):
+
+```js
+process.env.TWILIO_ACCOUNT_SID = '<get your own>';
+process.env.TWILIO_AUTHT_TOKEN = '<from twilio>';
 ```
 
-End with an example of getting some data out of the system or using it for a little demo
++ time to start the server!
 
-## Deployment
-
-Add additional notes about how to deploy this on a live system
+```console
+npm run start
+```
 
 ## Built With
 
-* [React](https://reactjs.org/docs/getting-started.html) - The web framework used
-* [Styled Components](https://www.styled-components.com/docs) - CSS in JS components
++ [React](https://reactjs.org/docs/getting-started.html) - A JavaScript library for building user interfaces
++ [Styled Components](https://www.styled-components.com/docs) - Visual primitives for the component age
++ [Express](https://expressjs.com/) - Fast, unopinionated, minimalist web framework for Node.js
 
 ## Authors
 
-* **Adam Sisk** - *Developer* - [github](https://github.com/calamityadam) | [linkedIn](https://www.linkedin.com/in/adamsisk/)
++ **Adam Sisk** - *Developer* - [github](https://github.com/calamityadam) | [linkedIn](https://www.linkedin.com/in/adamsisk/)
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details
-
+This project is licensed under the MIT License
 
 >made with ❤️ by Adam Sisk
