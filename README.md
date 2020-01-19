@@ -2,7 +2,9 @@
 
 [![Netlify Status](https://api.netlify.com/api/v1/badges/9034c417-f3f9-4bb8-b6b2-e8931925e041/deploy-status)](https://app.netlify.com/sites/)
 
-The backend for a simple short link generator with optional custom names and expiration settings built in [Node.js®](https://nodejs.org/)
+The back-end for a simple short link generator with optional custom names and expiration settings built in [Node.js®](https://nodejs.org/)
+
+*[front-end](https://github.com/CalamityAdam/flts-frontend)*
 
 ## Getting Started
 
