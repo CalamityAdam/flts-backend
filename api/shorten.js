@@ -85,18 +85,3 @@ router.delete('/:id', async (req, res, next) => {
     next(err);
   }
 });
-
-// GET /api/shorten/purgedata
-/**
- * INCOMPLETE
- * this route will return the number of shortens that are expired
- * purely for admin use
- */
-// router.get('/purgedata', async (req, res, next) => {
-//   try {
-//     const allShortens = await Shorten.findAll();
-//     const inactive =
-//   } catch (err) {
-//     next(err);
-//   }
-// });
